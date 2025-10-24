@@ -1,0 +1,31 @@
+input,
+textarea,
+select {
+    width: 100%;
+    padding: .75rem 1rem;
+    border: 1px solid fade(@heading, 15%);
+    border-radius: 14px;
+    background: #fff;
+    font-family: @font-stack;
+}
+
+label {
+    font-weight: 600;
+    color: @heading;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+@media (min-width: 768px) {
+    .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+}

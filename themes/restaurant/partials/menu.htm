@@ -1,0 +1,85 @@
+{# Menu section — Restoran-like style, editable via Theme Customizer #}
+{% set currency = this.theme.menu_currency ?: '€' %}
+{% set title = this.theme.menu_title ?: 'Notre Carte' %}
+{% set intro = this.theme.menu_intro %}
+{% set categories = this.theme.menu_categories ?: [] %}
+
+<section id="menu" class="menu section-padding">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2 class="section-title">{{ title }}</h2>
+      {% if intro %}<p class="section-subtitle">{{ intro }}</p>{% endif %}
+    </div>
+
+    {% if categories|length %}
+      <div class="menu-tabs">
+        <ul class="nav nav-pills justify-content-center gap-2" role="tablist">
+          {% for cat in categories %}
+            {% set tabId = 'menu-cat-' ~ loop.index %}
+            <li class="nav-item" role="presentation">
+              <button class="nav-link menu-tab {% if loop.first %}active{% endif %}"
+                      id="{{ tabId }}-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#{{ tabId }}"
+                      type="button" role="tab"
+                      aria-controls="{{ tabId }}"
+                      aria-selected="{{ loop.first ? 'true' : 'false' }}">
+                {% if cat.category_image %}
+                  <img class="menu-tab-img" src="{{ cat.category_image|media }}" alt="{{ cat.category_title }}">
+                {% endif %}
+                <span class="menu-tab-label">{{ cat.category_title }}</span>
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="tab-content mt-4">
+        {% for cat in categories %}
+          {% set tabId = 'menu-cat-' ~ loop.index %}
+          <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="{{ tabId }}-tab">
+            {% if cat.category_description %}
+              <p class="menu-cat-desc text-center text-muted mb-4">{{ cat.category_description }}</p>
+            {% endif %}
+
+            <div class="row gy-4">
+              {% for item in (cat.items ?: []) %}
+                <div class="col-lg-6">
+                  <div class="menu-item d-flex align-items-start">
+                    {% if item.image %}
+                      <img class="menu-item-img" src="{{ item.image|media }}" alt="{{ item.name }}">
+                    {% endif %}
+                    <div class="menu-item-body flex-grow-1">
+                      <div class="menu-item-head d-flex align-items-baseline">
+                        <h5 class="menu-item-name">{{ item.name }}</h5>
+                        {% if item.price is not empty %}
+                          <span class="menu-item-dots"></span>
+                          <span class="menu-item-price">{{ (item.price)|number_format(2, ',', ' ') }} {{ currency }}</span>
+                        {% endif %}
+                      </div>
+                      {% if item.description %}
+                        <p class="menu-item-desc text-muted mb-2">{{ item.description }}</p>
+                      {% endif %}
+                      {% set tags = item.tags ?: [] %}
+                      {% if tags %}
+                        <div class="menu-item-tags">
+                          {% if 'vegan' in tags %}<span class="badge rounded-pill text-bg-success">Vegan</span>{% endif %}
+                          {% if 'spicy' in tags %}<span class="badge rounded-pill text-bg-danger">Épicé</span>{% endif %}
+                          {% if 'signature' in tags %}<span class="badge rounded-pill text-bg-primary">Signature</span>{% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                <div class="col-12"><p class="text-center text-muted">Aucun plat pour cette catégorie pour le moment.</p></div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">Configurez vos catégories et plats dans <strong>Customize → Menu</strong> du thème.</p>
+    {% endif %}
+  </div>
+</section>

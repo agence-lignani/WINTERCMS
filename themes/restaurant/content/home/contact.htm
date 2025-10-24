@@ -1,0 +1,27 @@
+<section class="section contact" id="contact">
+    <div class="container contact-grid">
+        <div>
+            <h2>Réservations &amp; contact</h2>
+            <p>{{ this.theme.contact_text ?: 'Notre équipe vous répond du mardi au samedi de 10h à 19h.' }}</p>
+            <dl class="contact-list">
+                <div>
+                    <dt>Téléphone</dt>
+                    <dd><a href="tel:{{ this.theme.phone|replace({' ': '', '.': '', '-': ''}) ?: '0123456789' }}">{{ this.theme.phone ?: '01 23 45 67 89' }}</a></dd>
+                </div>
+                <div>
+                    <dt>Email</dt>
+                    <dd><a href="mailto:{{ this.theme.email ?: 'contact@restaurant.fr' }}">{{ this.theme.email ?: 'contact@restaurant.fr' }}</a></dd>
+                </div>
+                <div>
+                    <dt>Adresse</dt>
+                    <dd>{{ this.theme.address ?: '25 rue des Gourmets, 75002 Paris' }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="contact-cta">
+            <h3>Offrir une carte cadeau</h3>
+            <p>Partagez une expérience gourmande avec vos proches. Bons cadeaux disponibles en ligne et sur place.</p>
+            <a class="btn btn-primary" href="{{ this.theme.giftcard_url ?: (this.theme.booking_url ?: '#') }}">Acheter maintenant</a>
+        </div>
+    </div>
+</section>

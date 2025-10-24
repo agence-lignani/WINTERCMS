@@ -1,0 +1,29 @@
+.btn {
+    .btn-base();
+    border-color: fade(@primary, 40%);
+    color: @primary;
+    background: rgba(255,255,255,.72);
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+
+.btn-primary {
+    .btn-base();
+    background: @primary;
+    color: #fff;
+    border-color: @primary;
+    box-shadow: 0 12px 24px fade(@primary, 32%);
+}
+
+.btn:hover,
+.btn:focus {
+    opacity: .92;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    opacity: .96;
+    transform: translateY(-2px);
+}

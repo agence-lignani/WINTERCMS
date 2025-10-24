@@ -1,0 +1,23 @@
+.rounded(@r: @radius) { border-radius: @r; }
+.shadow() { box-shadow: @shadow-1; }
+.container() { max-width: @container; margin-inline: auto; padding: 0 1.5rem; }
+.btn-base() {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .85rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.card-base() {
+    background: #fff;
+    border: 1px solid @border;
+    .rounded();
+    .shadow();
+}

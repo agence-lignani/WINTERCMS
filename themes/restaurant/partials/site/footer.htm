@@ -1,0 +1,70 @@
+{# Footer sombre en 3 colonnes + barre basse #}
+<footer class="mt-auto bg-dark text-light pt-5">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-12 col-md-4">
+        <div class="h5 mb-3">{{ this.theme.site_name|default('Restaurant') }}</div>
+        {% if this.theme.tagline %}
+          <p class="text-secondary mb-3">{{ this.theme.tagline }}</p>
+        {% endif %}
+
+        {# Réseaux sociaux #}
+        <div class="d-flex gap-3 fs-5">
+          {% if this.theme.social_facebook %}
+            <a class="text-light opacity-75 hover-opacity" href="{{ this.theme.social_facebook }}" target="_blank" rel="noopener">
+              <i class="bi bi-facebook"></i>
+            </a>
+          {% endif %}
+          {% if this.theme.social_instagram %}
+            <a class="text-light opacity-75 hover-opacity" href="{{ this.theme.social_instagram }}" target="_blank" rel="noopener">
+              <i class="bi bi-instagram"></i>
+            </a>
+          {% endif %}
+          {% if this.theme.social_tiktok %}
+            <a class="text-light opacity-75 hover-opacity" href="{{ this.theme.social_tiktok }}" target="_blank" rel="noopener">
+              <i class="bi bi-tiktok"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="h5 mb-3">Contact</div>
+        <ul class="list-unstyled text-secondary m-0">
+          {% if this.theme.address %}
+            <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>{{ this.theme.address|nl2br }}</li>
+          {% endif %}
+          {% if this.theme.phone %}
+            <li class="mb-2"><i class="bi bi-telephone me-2"></i><a class="link-light text-decoration-none" href="tel:{{ this.theme.phone }}">{{ this.theme.phone }}</a></li>
+          {% endif %}
+          {% if this.theme.email %}
+            <li class="mb-2"><i class="bi bi-envelope me-2"></i><a class="link-light text-decoration-none" href="mailto:{{ this.theme.email }}">{{ this.theme.email }}</a></li>
+          {% endif %}
+          {% if this.theme.hours %}
+            <li class="mb-2"><i class="bi bi-clock me-2"></i>{{ this.theme.hours|nl2br }}</li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="h5 mb-3">Réservation</div>
+        {% if this.theme.cta_link %}
+          <a class="btn btn-outline-light rounded-pill px-3" href="{{ this.theme.cta_link }}">
+            {{ this.theme.cta_label|default('Réserver') }}
+          </a>
+        {% else %}
+          <p class="text-secondary">Appelez-nous pour réserver.</p>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <hr class="border-secondary mt-5 mb-3"/>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pb-4 small text-secondary">
+      <div>© {{ "now"|date("Y") }} {{ this.theme.site_name|default('Restaurant') }}</div>
+      <div>Propulsé par Winter CMS</div>
+    </div>
+  </div>
+</footer>
