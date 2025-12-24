@@ -1,0 +1,6 @@
+fields:
+    openai_api_key:
+        label: "Clé API OpenAI"
+        type: text
+        span: left
+        comment: "Clé utilisée pour générer automatiquement les descriptions de plats."

@@ -1,0 +1,61 @@
+title = "Accueil"
+url = "/"
+layout = "default"
+is_hidden = 0
+==
+{% for block in this.theme.sections %}
+    {% if block._group == 'hero' %}
+        {% partial 'sections/hero-dyn' block=block %}
+    {% elseif block._group == 'chef_signature' %}
+        {% partial 'sections/chef-signature' block=block %}
+    {% elseif block._group == 'philosophy' %}
+        {% partial 'sections/philosophy' block=block %}
+    {% elseif block._group == 'menu' %}
+        {% set variant = block.variant ?: 'v2' %}
+        {% if variant == 'v1' %}
+            {% partial 'sections/menu-card' block=block %}
+        {% elseif variant == 'v2' %}
+            {% partial 'sections/menu-card-v2' block=block %}
+            {% elseif variant == 'v4' %}
+            {% partial 'sections/menu-modern' block=block %}
+        {% elseif variant == 'v3' %}
+            {% partial 'sections/menu-card-v3' block=block %}
+        {% else %}
+            {% partial 'sections/menu-card-v2' block=block %}
+        {% endif %}
+    {% elseif block._group == 'menu_download' %}
+        {% partial 'sections/menu-download' block=block %}
+    {% elseif block._group == 'histoire' %}
+        {% partial 'sections/histoire-dyn' block=block %}
+    {% elseif block._group == 'galerie' %}
+        {% partial 'sections/galerie-dyn' block=block %}
+    {% elseif block._group == 'hours_map' %}
+        {% partial 'sections/hours-map' block=block %}
+    {% elseif block._group == 'reservation' %}
+        {% partial 'sections/reservation-form' block=block %}
+    {% elseif block._group == 'events' %}
+        {% partial 'sections/events' block=block %}
+    {% elseif block._group == 'happy_hour_live' %}
+        {% partial 'sections/happy-hour-live' block=block %}
+    {% elseif block._group == 'privatisation' %}
+        {% partial 'sections/privatisation-group' block=block %}
+    {% elseif block._group == 'faq' %}
+        {% partial 'sections/faq' block=block %}
+    {% elseif block._group == 'special_offer' %}
+        {% partial 'sections/special-offer' block=block %}
+    {% elseif block._group == 'testimonials' %}
+        {% partial 'sections/testimonials' block=block %}
+    {% elseif block._group == 'newsletter' %}
+        {% partial 'sections/newsletter' block=block %}
+    {% elseif block._group == 'jobs' %}
+        {# jobs est basé sur les champs global thème, le block sert juste à positionner la section #}
+        {% partial 'sections/jobs' block=block %}
+    {% endif %}
+{% else %}
+    <section class="py-20 text-center">
+      <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-serif mb-4">Bienvenue</h1>
+        <p class="text-neutral-600">Ajoutez des sections dans l'onglet "Accueil" du thème pour construire votre page d'accueil.</p>
+      </div>
+    </section>
+{% endfor %}

@@ -1,0 +1,730 @@
+name: Workshop Bistrot
+description: Thème bistrot parisien élégant basé sur Tailwind CSS
+author: Agence Lignani
+code: workshop
+parent: ''
+homepage: ''
+form:
+  tabs:
+    fields:
+      site_name:
+        label: Nom du restaurant
+        type: text
+        tab: Identité
+        default: Le Bouillon Parisien
+      site_tagline:
+        label: Slogan / Tagline
+        type: text
+        tab: Identité
+        default: Cuisine française traditionnelle à prix doux
+      logo:
+        label: Logo
+        type: mediafinder
+        mode: image
+        tab: Identité
+        span: left
+      favicon:
+        label: Favicon
+        type: mediafinder
+        mode: image
+        tab: Identité
+        span: right
+      primary_color:
+        label: Couleur principale (bistrot)
+        type: colorpicker
+        tab: Identité
+        default: '#7b1e1e'
+      accent_color:
+        label: Couleur d'accent
+        type: colorpicker
+        tab: Identité
+        default: '#f8f4ec'
+      address:
+        label: Adresse
+        type: textarea
+        size: small
+        tab: Contact & horaires
+        default: '12 rue des Bistros
+
+          75001 Paris'
+      phone:
+        label: Téléphone
+        type: text
+        tab: Contact & horaires
+        default: 01 23 45 67 89
+      email:
+        label: Email de contact
+        type: text
+        tab: Contact & horaires
+        default: contact@lebouillon.fr
+      opening_hours_title:
+        label: Titre des horaires
+        type: text
+        tab: Contact & horaires
+        default: Horaires d'ouverture
+      opening_hours:
+        label: Horaires (texte libre)
+        type: textarea
+        size: small
+        tab: Contact & horaires
+        default: 'Lundi - Vendredi : 12h00 - 23h00
+
+          Samedi : 12h00 - 00h00
+
+          Dimanche : 12h00 - 22h00
+
+          '
+      map_iframe:
+        label: Iframe Google Maps
+        type: textarea
+        size: large
+        tab: Contact & horaires
+      social_facebook:
+        label: Facebook
+        type: text
+        tab: Réseaux sociaux
+      social_instagram:
+        label: Instagram
+        type: text
+        tab: Réseaux sociaux
+      social_tiktok:
+        label: TikTok
+        type: text
+        tab: Réseaux sociaux
+      reservation_email:
+        label: Email de réception des réservations
+        type: text
+        tab: Réservation
+      reservation_intro:
+        label: Texte d'introduction
+        type: textarea
+        size: small
+        tab: Réservation
+      reservation_min_guests:
+        label: Nombre minimum de couverts
+        type: number
+        tab: Réservation
+        default: 1
+      reservation_max_guests:
+        label: Nombre maximum de couverts
+        type: number
+        tab: Réservation
+        default: 20
+      menu_pdf:
+        label: Carte au format PDF
+        type: mediafinder
+        mode: file
+        tab: Carte & menus
+      menu_menus:
+        label: Menus / Formules
+        type: repeater
+        tab: Carte & menus
+        prompt: Ajouter une formule
+        form:
+          fields:
+            name:
+              label: Nom de la formule
+              type: text
+            description:
+              label: Description
+              type: aidescription
+              size: small
+            tag:
+              label: Tag
+              type: text
+            service:
+              label: Service
+              type: dropdown
+              options:
+                midi: Midi
+                soir: Soir
+            lines:
+              label: Détails
+              type: repeater
+              form:
+                fields:
+                  label:
+                    label: Intitulé
+                    type: text
+                  info:
+                    label: Description
+                    type: textarea
+                    size: small
+            price:
+              label: Prix (global)
+              type: text
+              comment: Prix de la formule (global, pas par plat).
+            groups:
+              label: Composition de la formule
+              type: repeater
+              prompt: Ajouter un groupe (Entrées / Plats / Desserts / Boissons)
+              form:
+                fields:
+                  group_title:
+                    label: Titre du groupe
+                    type: dropdown
+                    options:
+                      entrees: Entrées
+                      plats: Plats
+                      desserts: Desserts
+                      boissons: Boissons
+                  items:
+                    label: Éléments
+                    type: repeater
+                    prompt: Ajouter un élément
+                    form:
+                      fields:
+                        label:
+                          label: Intitulé
+                          type: text
+                        info:
+                          label: Description
+                          type: textarea
+                          size: small
+      menu_categories:
+        label: Catégories de plats
+        type: repeater
+        tab: Carte & menus
+        prompt: Ajouter une catégorie
+        form:
+          fields:
+            name:
+              label: Nom de la catégorie
+              type: text
+            items:
+              label: Plats
+              type: repeater
+              form:
+                fields:
+                  name:
+                    label: Nom du plat
+                    type: text
+                  desc:
+                    label: Description
+                    type: aidescription
+                    size: small
+                  price:
+                    label: Prix
+                    type: text
+                  tag:
+                    label: Tag
+                    type: text
+                  service:
+                    label: Services
+                    type: checkboxlist
+                    options:
+                      midi: Midi
+                      soir: Soir
+                  image:
+                    label: Image
+                    type: mediafinder
+                    mode: image
+                  allergens:
+                    label: Allergènes
+                    type: checkboxlist
+                    comment: S’affiche en front dans une zone déroulante (V1 & V2).
+                    options:
+                      gluten: Gluten
+                      crustaces: Crustacés
+                      oeufs: Œufs
+                      poissons: Poissons
+                      arachides: Arachides
+                      soja: Soja
+                      lait: Lait
+                      fruits_a_coque: Fruits à coque
+                      celeri: Céleri
+                      moutarde: Moutarde
+                      sesame: Sésame
+                      sulfites: Sulfites
+                      lupin: Lupin
+                      mollusques: Mollusques
+                  popular:
+                    label: Plat populaire (V2)
+                    type: switch
+                    comment: Affiché dans l’onglet Popular de la variante V2 uniquement.
+                    default: false
+      menu_note:
+        label: 'Note (ex : prix nets, service compris)'
+        type: text
+        tab: Carte & menus
+      menu_background_color:
+        label: Couleur de fond de la section
+        type: colorpicker
+        tab: Carte & menus
+        default: '#f4eee3'
+      gallery_images:
+        label: Images de la galerie
+        type: repeater
+        tab: Galerie
+        prompt: Ajouter une image
+        form:
+          fields:
+            image:
+              label: Image
+              type: mediafinder
+              mode: image
+            alt:
+              label: Texte alternatif
+              type: text
+      jobs_title:
+        label: Titre section recrutement
+        type: text
+        tab: Recrutement
+        default: Rejoindre l'équipe
+      jobs_intro:
+        label: Texte d'introduction
+        type: textarea
+        size: small
+        tab: Recrutement
+      jobs_email:
+        label: Email de contact recrutement
+        type: text
+        tab: Recrutement
+      jobs_items:
+        label: Offres d'emploi
+        type: repeater
+        tab: Recrutement
+        prompt: Ajouter une offre
+        form:
+          fields:
+            role:
+              label: Poste
+              type: text
+            contract_type:
+              label: Type de contrat
+              type: text
+            description:
+              label: Description
+              type: textarea
+            link:
+              label: Lien de candidature
+              type: text
+      sections:
+        label: Sections de la page d'accueil
+        type: repeater
+        tab: Accueil
+        prompt: Ajouter une section
+        groups:
+          hero:
+            name: En tête
+            description: Section en tête de page
+            icon: icon-image
+            fields:
+              hero_title:
+                label: Titre
+                type: text
+                default: Bienvenue au Bouillon
+              hero_subtitle:
+                label: Sous-titre
+                type: textarea
+                size: small
+                default: Cuisine française traditionnelle.
+              hero_media_type:
+                label: Média
+                type: dropdown
+                options:
+                  image: Image
+                  video_youtube: Vidéo YouTube
+                default: image
+              hero_video_url:
+                label: URL de la vidéo
+                type: text
+                trigger:
+                  action: show
+                  field: hero_media_type
+                  condition: value[video_youtube]
+              hero_image:
+                label: Image
+                type: mediafinder
+                mode: image
+                trigger:
+                  action: show
+                  field: hero_media_type
+                  condition: value[image]
+              hero_background_mode:
+                label: Mode d'image
+                type: dropdown
+                options:
+                  normal: Normal
+                  fixed: Fixe
+                  parallax: Parallax
+                default: normal
+              hero_height:
+                label: Hauteur
+                type: dropdown
+                options:
+                  small: Petit
+                  medium: Moyen
+                  tall: Grand
+                default: medium
+              hero_content_position:
+                label: Position du contenu
+                type: dropdown
+                options:
+                  center: Centré
+                  left: Gauche
+                  right: Droite
+                default: center
+              hero_overlay_intensity:
+                label: Overlay
+                type: dropdown
+                options:
+                  none: Aucun
+                  light: Léger
+                  medium: Moyen
+                  strong: Fort
+                default: none
+              hero_overlay_color:
+                label: Couleur overlay
+                type: colorpicker
+                default: '#000000'
+                trigger:
+                  action: show
+                  field: hero_overlay_intensity
+                  condition: value[light], value[medium], value[strong]
+              hero_use_dynamic_buttons:
+                label: Boutons dynamiques
+                type: switch
+                default: false
+              hero_buttons:
+                label: Boutons
+                type: repeater
+                trigger:
+                  action: show
+                  field: hero_use_dynamic_buttons
+                  condition: checked
+                form:
+                  fields:
+                    label:
+                      label: Texte
+                      type: text
+                    url:
+                      label: URL
+                      type: text
+                    newtab:
+                      label: Nouvel onglet
+                      type: switch
+          chef_signature:
+            name: Signature du Chef
+            icon: icon-user
+            fields:
+              chef_name:
+                label: Nom
+                type: text
+              chef_role:
+                label: Rôle
+                type: text
+              chef_photo:
+                label: Photo
+                type: mediafinder
+                mode: image
+              chef_quote:
+                label: Citation
+                type: textarea
+                size: small
+              chef_bio:
+                label: Biographie
+                type: textarea
+                size: large
+          philosophy:
+            name: Philosophie
+            icon: icon-lightbulb-o
+            fields:
+              title:
+                label: Titre
+                type: text
+              intro:
+                label: Introduction
+                type: textarea
+                size: small
+              image:
+                label: Image
+                type: mediafinder
+                mode: image
+              pillars:
+                label: Piliers
+                type: repeater
+                maxItems: 4
+                form:
+                  fields:
+                    icon:
+                      label: Icône
+                      type: text
+                    title:
+                      label: Titre
+                      type: text
+                    text:
+                      label: Texte
+                      type: textarea
+          menu:
+            name: Carte
+            icon: icon-cutlery
+            fields:
+              title:
+                label: Titre
+                type: text
+              lead:
+                label: Sous-titre
+                type: text
+              background_color:
+                label: Couleur de fond
+                type: colorpicker
+              variant:
+                label: Version
+                type: dropdown
+                options:
+                  v1: V1
+                  v2: V2
+                  v3: V3
+                  v4: V4
+                default: v2
+          menu_download:
+            name: Téléchargement de la carte
+            icon: icon-file-pdf-o
+            fields:
+              title:
+                label: Titre
+                type: text
+              subtitle:
+                label: Introduction
+                type: textarea
+                size: small
+              pdf_file:
+                label: PDF
+                type: mediafinder
+                mode: file
+              primary_label:
+                label: Texte bouton principal
+                type: text
+              secondary_label:
+                label: Texte bouton secondaire
+                type: text
+          histoire:
+            name: Histoire
+            icon: icon-book
+            fields:
+              histoire_title:
+                label: Titre
+                type: text
+              histoire_intro:
+                label: Introduction
+                type: textarea
+              histoire_content:
+                label: Texte
+                type: textarea
+                size: large
+              histoire_image:
+                label: Image
+                type: mediafinder
+                mode: image
+          galerie:
+            name: Galerie
+            icon: icon-picture-o
+            fields:
+              galerie_title:
+                label: Titre
+                type: text
+              galerie_intro:
+                label: Introduction
+                type: textarea
+          hours_map:
+            name: Horaires & plan
+            icon: icon-map-marker
+            fields:
+              custom_title:
+                label: Titre
+                type: text
+              show_button:
+                label: Afficher bouton Réserver
+                type: switch
+                default: true
+          reservation:
+            name: Réservation
+            icon: icon-calendar
+            fields:
+              reservation_block_title:
+                label: Titre
+                type: text
+              reservation_block_intro:
+                label: Introduction
+                type: textarea
+          events:
+            name: Événements
+            icon: icon-calendar-check-o
+            fields:
+              title:
+                label: Titre
+                type: text
+              intro:
+                label: Introduction
+                type: textarea
+              items:
+                label: Événements
+                type: repeater
+                form:
+                  fields:
+                    date_label:
+                      label: Date
+                      type: text
+                    title:
+                      label: Titre
+                      type: text
+                    description:
+                      label: Description
+                      type: textarea
+                    time:
+                      label: Horaire
+                      type: text
+                    cta_label:
+                      label: Bouton
+                      type: text
+                    cta_page:
+                      label: Page
+                      type: text
+          happy_hour_live:
+            name: Happy Hour
+            icon: icon-clock-o
+            fields:
+              label:
+                label: Label
+                type: text
+              title:
+                label: Titre
+                type: text
+              description:
+                label: Description
+                type: textarea
+              start_time:
+                label: Début
+                type: text
+              end_time:
+                label: Fin
+                type: text
+              info:
+                label: Info
+                type: text
+              cta_label:
+                label: Bouton
+                type: text
+              cta_page:
+                label: Page
+                type: text
+          privatisation:
+            name: Privatisation
+            icon: icon-users
+            fields:
+              title:
+                label: Titre
+                type: text
+              subtitle:
+                label: Sous-titre
+                type: textarea
+              description:
+                label: Texte
+                type: textarea
+              highlights:
+                label: Points clés
+                type: repeater
+                form:
+                  fields:
+                    title:
+                      label: Titre
+                      type: text
+                    text:
+                      label: Texte
+                      type: textarea
+              cta_label:
+                label: Bouton
+                type: text
+              cta_page:
+                label: Page
+                type: text
+          faq:
+            name: FAQ
+            icon: icon-question-circle
+            fields:
+              title:
+                label: Titre
+                type: text
+              intro:
+                label: Introduction
+                type: textarea
+              items:
+                label: Questions / réponses
+                type: repeater
+                form:
+                  fields:
+                    question:
+                      label: Question
+                      type: text
+                    answer:
+                      label: Réponse
+                      type: textarea
+          special_offer:
+            name: Offre spéciale
+            icon: icon-bullhorn
+            fields:
+              label:
+                label: Label
+                type: text
+              title:
+                label: Titre
+                type: text
+              description:
+                label: Description
+                type: textarea
+              time_range:
+                label: Créneau
+                type: text
+              cta_label:
+                label: Bouton
+                type: text
+              cta_page:
+                label: Page
+                type: text
+          testimonials:
+            name: Avis
+            icon: icon-comments
+            fields:
+              title:
+                label: Titre
+                type: text
+              intro:
+                label: Introduction
+                type: textarea
+              source_label:
+                label: Source
+                type: text
+              items:
+                label: Avis
+                type: repeater
+                form:
+                  fields:
+                    name:
+                      label: Nom
+                      type: text
+                    text:
+                      label: Texte
+                      type: textarea
+                    rating:
+                      label: Note
+                      type: number
+                    source:
+                      label: Source
+                      type: text
+          newsletter:
+            name: Newsletter
+            icon: icon-envelope
+            fields:
+              title:
+                label: Titre
+                type: text
+              subtitle:
+                label: Sous-titre
+                type: textarea
+              placeholder:
+                label: Placeholder
+                type: text
+              cta_label:
+                label: Bouton
+                type: text

@@ -1,0 +1,67 @@
+<?php
+    // Variables disponibles :
+    // $name, $value, $field, $textareaId, $sourceNameField
+?>
+<div class="aidescription-widget">
+    <textarea
+        name="<?= e($name) ?>"
+        id="<?= e($textareaId) ?>"
+        class="form-control"
+        rows="4"
+    ><?= e($value) ?></textarea>
+
+    <div class="mt-2">
+        <button
+            type="button"
+            class="btn btn-default wn-icon-magic"
+            data-control="ai-description-generate"
+            data-handler="<?= $this->getEventHandler('onGenerateDescription') ?>"
+            data-name-field="<?= e($sourceNameField) ?>"
+            data-textarea-id="<?= e($textareaId) ?>"
+        >
+            Générer avec l’IA
+        </button>
+    </div>
+
+    <p class="help-block">
+        Le bouton utilise le <strong>nom du plat / de la formule</strong> pour générer une description.
+        Aucune requête n’est envoyée tant que vous ne cliquez pas.
+    </p>
+</div>
+
+<script>
+(function($) {
+    $(document).off('click.aiDescription', '[data-control="ai-description-generate"]');
+    $(document).on('click.aiDescription', '[data-control="ai-description-generate"]', function() {
+        var $btn        = $(this);
+        var handler     = $btn.data('handler');
+        var nameField   = $btn.data('name-field');
+        var textareaId  = $btn.data('textarea-id');
+
+        var $nameInput  = $('[name="' + nameField + '"]');
+        var dishName    = $nameInput.val();
+
+        if (!dishName) {
+            alert('Renseignez d’abord le nom du plat ou de la formule.');
+            return;
+        }
+
+        $btn.prop('disabled', true).addClass('loading');
+
+        $.request(handler, {
+            data: { dish_name: dishName },
+            success: function(data) {
+                if (data.description) {
+                    $('#' + textareaId).val(data.description);
+                }
+            },
+            error: function() {
+                alert("Erreur lors de l'appel à l’IA.");
+            },
+            complete: function() {
+                $btn.prop('disabled', false).removeClass('loading');
+            }
+        });
+    });
+})(window.jQuery);
+</script>

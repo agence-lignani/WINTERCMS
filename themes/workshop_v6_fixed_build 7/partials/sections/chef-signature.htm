@@ -1,0 +1,61 @@
+{% set chef_name = block.chef_name ?: 'Jean Dupont' %}
+{% set chef_role = block.chef_role ?: 'Chef de cuisine' %}
+{% set chef_photo = block.chef_photo ?: null %}
+{% set chef_quote = block.chef_quote ?: '' %}
+{% set chef_bio = block.chef_bio ?: '' %}
+{% set reverse = block.chef_layout_reverse ?? false %}
+
+<section class="py-20 bg-gradient-to-b from-[#f8f4ec] to-white" id="chef">
+  <div class="container mx-auto px-4">
+    <div class="
+      flex flex-col gap-10 lg:gap-14 items-center
+      {% if reverse %}
+        lg:flex-row
+      {% else %}
+        lg:flex-row-reverse
+      {% endif %}
+      max-w-6xl mx-auto
+    ">
+
+      {# IMAGE – toujours en premier dans le DOM pour être au dessus sur mobile #}
+      <div class="w-full lg:w-[0.9fr]">
+        <div class="relative rounded-[1.75rem] overflow-hidden shadow-xl">
+          {% if chef_photo %}
+            <img src="{{ chef_photo|media }}" alt="{{ chef_name }}"
+                 class="w-full h-full max-h-[380px] object-cover">
+          {% else %}
+            <div class="w-full h-[320px] bg-neutral-200 flex items-center justify-center text-neutral-500 text-sm">
+              Ajoutez une photo du chef dans la section "Signature du Chef".
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# TEXTE #}
+      <div class="w-full lg:w-[1.1fr]">
+        <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-3">Signature du chef</p>
+
+        <h2 class="font-serif text-3xl md:text-4xl text-neutral-900 mb-1">
+          {{ chef_name }}
+        </h2>
+
+        <p class="text-xs md:text-sm uppercase tracking-[0.18em] text-neutral-500 mb-5">
+          {{ chef_role }}
+        </p>
+
+        {% if chef_quote %}
+          <p class="text-neutral-900 italic text-lg md:text-xl mb-6">
+            “{{ chef_quote }}”
+          </p>
+        {% endif %}
+
+        {% if chef_bio %}
+          <p class="text-neutral-700 leading-relaxed whitespace-pre-line">
+            {{ chef_bio }}
+          </p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>

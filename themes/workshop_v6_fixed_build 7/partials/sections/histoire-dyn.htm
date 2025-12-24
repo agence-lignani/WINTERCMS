@@ -1,0 +1,36 @@
+{% set title = block.histoire_title ?: 'Un bouillon dans la pure tradition parisienne' %}
+{% set intro = block.histoire_intro ?: '' %}
+{% set content = block.histoire_content ?: '' %}
+{% set image = block.histoire_image ?: null %}
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">Notre histoire</p>
+      <h2 class="font-serif text-3xl text-neutral-900 mb-4">
+        {{ title }}
+      </h2>
+      {% if intro %}
+        <p class="text-neutral-700 leading-relaxed mb-4">
+          {{ intro }}
+        </p>
+      {% endif %}
+      {% if content %}
+        <p class="text-neutral-700 leading-relaxed whitespace-pre-line">
+          {{ content }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="relative h-72 md:h-80">
+      {% if image %}
+        <img src="{{ image|media }}" alt="Salle du restaurant"
+             class="w-full h-full object-cover rounded-lg shadow-lg">
+      {% else %}
+        <div class="w-full h-full bg-neutral-200 rounded-lg flex items-center justify-center text-neutral-500">
+          Ajoutez une image dans la section "Histoire / À propos".
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

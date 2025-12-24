@@ -1,0 +1,200 @@
+:root{
+  --blue:#0b2ea6;
+  --green:#0a8f7a;
+  --green2:#087c69;
+  --border:#cfe3df;
+  --shadow:0 10px 30px rgba(0,0,0,.18);
+  --font:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
+}
+
+/* full blue background */
+html, body.layout-auth.pronote-auth{
+  height:100% !important;
+  margin:0 !important;
+  background:var(--blue) !important;
+  font-family:var(--font);
+}
+
+/* neutralise auth wrappers */
+body.layout-auth.pronote-auth .login-container,
+body.layout-auth.pronote-auth .login-wrapper,
+body.layout-auth.pronote-auth .auth-container,
+body.layout-auth.pronote-auth #layout-canvas,
+body.layout-auth.pronote-auth #layout-canvas > .layout{
+  all: unset !important;
+  display: contents !important;
+}
+
+/* topbar */
+.pronote-topbar{
+  height:56px;
+  background:#f7f8fb;
+  display:grid;
+  grid-template-columns:180px 1fr 180px;
+  align-items:center;
+  padding:0 16px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  font-weight:800;
+  color:#111827;
+}
+.pronote-topbar__left img{height:32px;object-fit:contain}
+.pronote-topbar__center{text-align:center;font-size:14px;letter-spacing:.6px}
+.pronote-topbar__right{text-align:right;color:var(--green);font-weight:900}
+
+/* 2 cols */
+.pronote-page{
+  min-height:calc(100vh - 56px);
+  display:grid;
+  place-items:center;
+  padding:28px;
+}
+.pronote-shell{
+  width:min(1280px,100%);
+  min-height:650px;
+  display:grid;
+  grid-template-columns:65% 35%;
+  gap:28px;
+}
+
+/* left */
+.pronote-left{color:#fff;display:flex;flex-direction:column;gap:18px}
+.pronote-info{
+  background:#eef1f7;color:#111827;border-radius:10px;
+  padding:18px 20px;max-width:560px;box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+.pronote-info h2{margin:0 0 6px 0;font-size:16px;font-weight:900}
+.pronote-info p{margin:0;font-size:14px;color:#334155}
+
+.pronote-left-grid{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:22px;
+  align-items:center;
+}
+
+/* illustration */
+.pronote-illus{
+  position:relative;
+  width:380px;
+  height:260px;
+  overflow:hidden; /* évite tout débordement */
+}
+.pronote-illus .sketch{
+  position:absolute;left:0;top:0;width:120px;height:120px;border-radius:10px;
+  background:rgba(255,255,255,.15);transform:rotate(-10deg);
+}
+.pronote-illus .poster{
+  position:absolute;left:0;bottom:0;width:360px;height:210px;border-radius:6px;
+  overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,.18);
+  background:rgba(255,255,255,.15);
+  z-index:1;
+}
+.pronote-illus .poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+/* quiz */
+.pronote-quiz{max-width:420px;font-size:14px;line-height:1.4}
+.pronote-quiz .badge{
+  display:inline-block;background:#facc15;color:#111827;font-weight:900;font-size:12px;
+  border-radius:4px;padding:2px 6px;margin-bottom:6px;
+}
+.pronote-quiz .q{margin:0 0 8px 0;font-weight:800}
+.pronote-quiz .answers{margin:0;padding-left:16px;color:#e2e8f0}
+.pronote-quiz .answers li{margin:3px 0}
+.pronote-quiz .link{display:inline-block;margin-top:8px;color:#fff;font-weight:900;text-decoration:none}
+
+/* right*/
+.pronote-right{display:flex;align-items:center;justify-content:center}
+.pronote-card{
+  width:100%;max-width:420px;background:#fff;border-radius:12px;
+  box-shadow:var(--shadow);padding:22px;
+}
+
+/* signin */
+.pronote-signin{display:flex;flex-direction:column;gap:14px}
+.pronote-signin__header{text-align:center;display:flex;flex-direction:column;gap:8px}
+.pronote-signin__space{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:4px}
+.pronote-signin__space-title{font-size:13px;font-weight:800;color:#111827}
+.pronote-signin__space-icon{
+  width:54px;height:54px;border-radius:12px;border:3px solid transparent;
+  background:
+    linear-gradient(#ffffff,#ffffff) padding-box,
+    linear-gradient(135deg,#18b6a3,#0a8f7a) border-box;
+  position:relative;
+}
+.pronote-signin__logoimg{height:44px;margin:0 auto;object-fit:contain}
+
+.pronote-signin__group{display:flex;flex-direction:column;gap:8px}
+.pronote-signin__label{font-size:12px;font-weight:700;color:#111827}
+.pronote-signin__label .req{color:#ef4444;font-weight:900;margin-left:2px}
+
+.pronote-signin__input{
+  width:100%;height:44px;border:2px solid var(--border)!important;border-radius:8px;
+  padding:0 12px;font-size:14px;outline:none;
+}
+.pronote-signin__input:focus{border-color:#31b3a2!important}
+
+.pronote-signin__passwordwrap{position:relative}
+.pronote-signin__toggle{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border:none;background:transparent;cursor:pointer;opacity:.6;
+}
+.pronote-signin__toggle:before{
+  content:"";display:block;width:100%;height:100%;border-radius:999px;background:rgba(0,0,0,.08);
+}
+.pronote-signin__toggle.is-active{opacity:1}
+
+.pronote-signin__remember{display:flex;align-items:center;gap:8px;font-size:12px;color:#0f172a;margin-top:2px}
+.pronote-signin__remember input{width:14px;height:14px;accent-color:#18b6a3}
+
+.pronote-signin__submit{
+  margin-top:8px;background:var(--green)!important;border:none;border-radius:999px!important;
+  height:46px!important;font-weight:900!important;color:#fff;cursor:pointer;
+  letter-spacing:.2px;box-shadow:0 4px 0 rgba(0,0,0,.12)!important;
+}
+.pronote-signin__submit:hover{background:var(--green2)!important}
+
+.pronote-signin__links{text-align:center;margin-top:6px;font-size:12px}
+.pronote-signin__links a{color:var(--green);font-weight:700;text-decoration:none}
+.pronote-signin__links a:hover{text-decoration:underline}
+
+#layout-flash-messages{
+  position:fixed;top:70px;right:18px;z-index:9999;
+  width:min(420px, calc(100% - 36px));
+}
+
+/* === HOTFIX Poster sizing (force) === */
+.pronote-left .pronote-illus{
+  position: relative !important;
+  width: 380px !important;
+  height: 260px !important;
+  overflow: hidden !important;
+}
+.pronote-left .pronote-illus .poster{
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 360px !important;
+  height: 210px !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+.pronote-left .pronote-illus .poster > img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+@media (max-width: 980px){
+  .pronote-shell{grid-template-columns:1fr}
+  .pronote-left-grid{grid-template-columns:1fr}
+  .pronote-illus{width:100%;max-width:380px}
+}

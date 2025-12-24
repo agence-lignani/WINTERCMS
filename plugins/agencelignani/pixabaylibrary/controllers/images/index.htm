@@ -1,0 +1,53 @@
+<div class="layout">
+    <div class="layout-row min-size">
+        <div class="layout-cell">
+            <h1>Banque d’images Pixabay</h1>
+
+            <p class="text-muted">
+                Recherchez des images libres de droits et importez-les directement dans le gestionnaire de Médias.
+            </p>
+
+            <form method="get" action="" class="form-inline">
+                <div class="form-group">
+                    <label for="q">Recherche</label>
+                    <input
+                        type="text"
+                        name="q"
+                        id="q"
+                        value="<?= e($query) ?>"
+                        class="form-control"
+                        placeholder="ex : pizza, burger, terrasse..."
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-search"></i> Rechercher
+                </button>
+            </form>
+
+            <div id="pixabay-flash" class="m-t">
+                <?php echo $this->makePartial('flash'); ?>
+            </div>
+
+            <?php if (!empty($error)): ?>
+                <div class="callout callout-danger m-t">
+                    <p><?= e($error) ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($results) && !empty($results['hits'])): ?>
+                <?php
+                    echo $this->makePartial('results', [
+                        'results' => $results,
+                        'query'   => $query,
+                        'page'    => $page,
+                    ]);
+                ?>
+            <?php elseif ($query && (empty($results) || empty($results['hits'])) && !$error): ?>
+                <p class="m-t">
+                    Aucun résultat trouvé pour <strong><?= e($query) ?></strong>.
+                </p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

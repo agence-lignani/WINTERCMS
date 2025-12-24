@@ -1,0 +1,94 @@
+{# --------------------------------------------------------
+  PHILOSOPHIE / CONCEPT - Workshop Bistrot
+  Champs utilisés :
+  - block.title
+  - block.intro
+  - block.image
+  - block.pillars (icon, title, text)
+  - block.layout_reverse (switch)
+--------------------------------------------------------- #}
+
+{% set title = block.title ?: 'Notre philosophie' %}
+{% set intro = block.intro ?: '' %}
+{% set image = block.image ?: null %}
+{% set pillars = block.pillars ?: [] %}
+{% set reverse = block.layout_reverse ?? false %}
+
+<section class="py-20 bg-white" id="philosophie">
+  <div class="container mx-auto px-4">
+    <div class="
+      max-w-6xl mx-auto
+      flex flex-col gap-12 lg:gap-16 items-center
+      {% if reverse %}
+        lg:flex-row-reverse
+      {% else %}
+        lg:flex-row
+      {% endif %}
+    ">
+
+      {# COLONNE TEXTE + PILIERS #}
+      <div class="w-full lg:w-[1.15fr]">
+        <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-3">
+          Philosophie & concept
+        </p>
+
+        <h2 class="font-serif text-3xl md:text-4xl text-neutral-900 mb-4">
+          {{ title }}
+        </h2>
+
+        {% if intro %}
+          <p class="text-neutral-700 leading-relaxed mb-8 whitespace-pre-line">
+            {{ intro }}
+          </p>
+        {% endif %}
+
+        {% if pillars is not empty %}
+          <div class="grid sm:grid-cols-2 gap-5 md:gap-6">
+            {% for pillar in pillars %}
+              <div class="rounded-2xl border border-neutral-200/70 bg-neutral-50/60 px-4 py-4 md:px-5 md:py-5 shadow-sm hover:shadow-md transition-shadow">
+                {% if pillar.icon %}
+                  <p class="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-neutral-200 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-600 mb-3">
+                    {{ pillar.icon }}
+                  </p>
+                {% endif %}
+
+                {% if pillar.title %}
+                  <h3 class="text-base md:text-lg font-semibold text-neutral-900 mb-1.5">
+                    {{ pillar.title }}
+                  </h3>
+                {% endif %}
+
+                {% if pillar.text %}
+                  <p class="text-sm text-neutral-600 leading-relaxed">
+                    {{ pillar.text }}
+                  </p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {# COLONNE IMAGE #}
+      <div class="w-full lg:w-[0.85fr]">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-[#f8f4ec] rounded-[2rem] -z-10 hidden md:block"></div>
+          <div class="rounded-[2rem] overflow-hidden shadow-xl">
+            {% if image %}
+              <img
+                src="{{ image|media }}"
+                alt="{{ title }}"
+                class="w-full h-full max-h-[420px] object-cover"
+              >
+            {% else %}
+              <div class="w-full h-[260px] md:h-[340px] bg-neutral-200 flex items-center justify-center text-neutral-500 text-sm">
+                Ajoutez une image d’illustration dans la section "Philosophie / Concept".
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

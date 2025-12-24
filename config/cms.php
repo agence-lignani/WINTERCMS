@@ -36,7 +36,7 @@ return [
     |
     */
 
-    'backendUri' => '/backend',
+    'backendUri' => '/connectadmin',
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +67,8 @@ return [
     |
     */
 
-    'backendForceRemember' => true,
+ 'backendForceRemember' => false,
+
 
     /*
     |--------------------------------------------------------------------------

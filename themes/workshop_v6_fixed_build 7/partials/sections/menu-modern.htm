@@ -1,0 +1,285 @@
+{# ======================================================
+  VERSION V4 — MODERNE AVEC DOUBLE ONGLET
+====================================================== #}
+
+{% set bg = block.background_color ?: '#f4eee3' %}
+{% set menus = this.theme.menu_menus ?: [] %}
+{% set cats = this.theme.menu_categories ?: [] %}
+{% set note = this.theme.menu_note ?: '' %}
+
+{% set currentService = get('service') ?: 'midi' %}
+{% set currentTab = get('tab') ?: 'formules' %}
+
+{% set blockTitle = block.title ?: 'Notre carte' %}
+{% set blockLead  = block.lead  ?: '' %}
+
+<section id="menu" class="py-20" style="background-color: {{ bg }}">
+  <div class="container mx-auto px-4">
+    
+{# Header (Accueil) #}
+{% set sectionTitle = block.title ?: this.theme.menu_title %}
+{% set sectionLead  = block.lead  ?: this.theme.menu_lead %}
+
+{% if sectionTitle or sectionLead %}
+  <header class="mb-10 text-center">
+    {% if sectionTitle %}
+      <h2 class="text-3xl md:text-4xl font-semibold text-neutral-900">{{ sectionTitle }}</h2>
+    {% endif %}
+    {% if sectionLead %}
+      <p class="mt-3 text-lg text-neutral-600">{{ sectionLead }}</p>
+    {% endif %}
+  </header>
+{% endif %}
+
+<div class="max-w-5xl mx-auto">
+
+      {# HEADER #}
+      <header class="text-center mb-10">
+        <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-3">
+          Carte & menus
+        </p>
+        <h2 class="font-serif text-3xl md:text-4xl text-neutral-900 mb-3">
+          {{ blockTitle }}
+        </h2>
+        {% if blockLead %}
+          <p class="text-neutral-600 max-w-2xl mx-auto">
+            {{ blockLead }}
+          </p>
+        {% endif %}
+      </header>
+
+      {# ONGLET MIDI / SOIR #}
+      <div class="flex justify-center mb-8">
+        <div class="inline-flex bg-white/60 border border-neutral-200 rounded-full p-1">
+          <a href="?service=midi&tab={{ currentTab }}"
+             class="px-4 py-1.5 text-xs md:text-sm rounded-full uppercase tracking-[0.18em]
+                    {{ currentService == 'midi'
+                       ? 'bg-neutral-900 text-white'
+                       : 'text-neutral-600 hover:text-neutral-900' }}">
+            Midi
+          </a>
+          <a href="?service=soir&tab={{ currentTab }}"
+             class="px-4 py-1.5 text-xs md:text-sm rounded-full uppercase tracking-[0.18em]
+                    {{ currentService == 'soir'
+                       ? 'bg-neutral-900 text-white'
+                       : 'text-neutral-600 hover:text-neutral-900' }}">
+            Soir
+          </a>
+        </div>
+      </div>
+
+      {# ONGLET FORMULES / PLATS #}
+      <nav class="flex justify-center mb-10">
+        <ul class="flex gap-8 text-xs md:text-sm uppercase tracking-[0.22em]">
+          <li>
+            <a href="?tab=formules&service={{ currentService }}"
+               class="pb-2 border-b-2 transition
+                      {{ currentTab == 'formules'
+                         ? 'border-[#7b1e1e] text-neutral-900 font-semibold'
+                         : 'border-transparent text-neutral-500 hover:text-neutral-800' }}">
+              Menus & Formules
+            </a>
+          </li>
+          <li>
+            <a href="?tab=plats&service={{ currentService }}"
+               class="pb-2 border-b-2 transition
+                      {{ currentTab == 'plats'
+                         ? 'border-[#7b1e1e] text-neutral-900 font-semibold'
+                         : 'border-transparent text-neutral-500 hover:text-neutral-800' }}">
+              Carte des plats
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      {# ================================
+         ONGLET FORMULES
+      ================================= #}
+      {% if currentTab == 'formules' %}
+
+        {% set hasMenus = false %}
+        {% for m in menus %}
+          {% set raw = m.service ?: '' %}
+          {% set showMenu = false %}
+
+          {% if raw == '' %}
+            {# champ vide = on considère tous services #}
+            {% set showMenu = true %}
+          {% elseif currentService == 'midi' and ('midi' in raw) %}
+            {% set showMenu = true %}
+          {% elseif currentService == 'soir' and ('soir' in raw) %}
+            {% set showMenu = true %}
+          {% endif %}
+
+          {% if showMenu %}
+            {% set hasMenus = true %}
+          {% endif %}
+        {% endfor %}
+
+        {% if hasMenus %}
+          <div class="grid md:grid-cols-2 gap-8">
+
+            {% for m in menus %}
+              {% set raw = m.service ?: '' %}
+              {% set showMenu = false %}
+
+              {% if raw == '' %}
+                {% set showMenu = true %}
+              {% elseif currentService == 'midi' and ('midi' in raw) %}
+                {% set showMenu = true %}
+              {% elseif currentService == 'soir' and ('soir' in raw) %}
+                {% set showMenu = true %}
+              {% endif %}
+
+              {% if showMenu %}
+                {% set lines = m.lines ?: [] %}
+
+                <article class="bg-white rounded-2xl shadow-lg border border-neutral-200 px-6 py-6 md:px-8 md:py-8">
+                  <header class="mb-4">
+                    <p class="font-serif text-lg md:text-xl text-neutral-900">
+                      {{ m.name }}
+                    </p>
+
+                    {% if m.tag %}
+                      <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[#7b1e1e]">
+                        {{ m.tag }}
+                      </span>
+                    {% endif %}
+                  </header>
+
+                  {% if m.description %}
+                    <p class="text-sm text-neutral-700 mb-4">
+                      {{ m.description }}
+                    </p>
+                  {% endif %}
+
+                  {% if lines %}
+                    <ul class="space-y-3">
+                      {% for line in lines %}
+                        <li>
+                          <div class="flex justify-between gap-4">
+                            <span class="text-sm text-neutral-900">
+                              {{ line.label }}
+                            </span>
+                            {% if line.price %}
+                              <span class="text-sm font-semibold text-neutral-900">
+                                {{ line.price }} €
+                              </span>
+                            {% endif %}
+                          </div>
+
+                          {% if line.info %}
+                            <p class="text-xs text-neutral-600 mt-1">
+                              {{ line.info }}
+                            </p>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </article>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+        {% else %}
+          <p class="text-center text-neutral-500">
+            Aucune formule configurée pour ce service.
+          </p>
+        {% endif %}
+
+      {# ================================
+         ONGLET PLATS
+      ================================= #}
+      {% elseif currentTab == 'plats' %}
+
+        {% set anyVisible = false %}
+
+        {% for cat in cats %}
+          {% set items = cat.items ?: [] %}
+          {% set visibleItems = [] %}
+
+          {# filtrage multi-service : midi / soir / vide / "midi,soir" #}
+          {% for dish in items %}
+            {% set raw = dish.service ?: '' %}
+            {% set showDish = false %}
+
+            {% if raw == '' %}
+              {# champ vide = on affiche pour tous les services #}
+              {% set showDish = true %}
+            {% elseif currentService == 'midi' and ('midi' in raw) %}
+              {% set showDish = true %}
+            {% elseif currentService == 'soir' and ('soir' in raw) %}
+              {% set showDish = true %}
+            {% endif %}
+
+            {% if showDish %}
+              {% set visibleItems = visibleItems|merge([dish]) %}
+            {% endif %}
+          {% endfor %}
+
+          {% if visibleItems %}
+            {% set anyVisible = true %}
+
+            <section class="mb-12">
+              <header class="mb-3">
+                <h3 class="font-serif text-xl text-neutral-900">
+                  {{ cat.name }}
+                </h3>
+                <div class="w-10 h-px bg-[#7b1e1e] mt-2"></div>
+              </header>
+
+              <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm">
+                <ul class="divide-y divide-neutral-100">
+                  {% for dish in visibleItems %}
+                    <li class="px-5 py-4">
+                      <div class="flex justify-between gap-4">
+                        <div>
+                          <p class="font-medium text-neutral-900">
+                            {{ dish.name }}
+                            {% if dish.tag %}
+                              <span class="ml-2 text-[0.65rem] uppercase tracking-[0.2em] text-[#7b1e1e]">
+                                {{ dish.tag }}
+                              </span>
+                            {% endif %}
+                          </p>
+
+                          {% if dish.desc %}
+                            <p class="text-sm text-neutral-600 mt-1">
+                              {{ dish.desc }}
+                            </p>
+                          {% endif %}
+                        </div>
+
+                        {% if dish.price %}
+                          <p class="text-sm font-semibold text-neutral-900 whitespace-nowrap">
+                            {{ dish.price }} €
+                          </p>
+                        {% endif %}
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </section>
+          {% endif %}
+        {% endfor %}
+
+        {% if not anyVisible %}
+          <p class="text-center text-neutral-500">
+            Aucun plat configuré pour ce service.
+          </p>
+        {% endif %}
+
+      {% endif %}
+
+      {# NOTE BAS DE PAGE #}
+      {% if note %}
+        <p class="mt-10 text-center text-neutral-600 text-xs uppercase tracking-[0.18em]">
+          {{ note }}
+        </p>
+      {% endif %}
+
+    </div>
+  </div>
+</section>

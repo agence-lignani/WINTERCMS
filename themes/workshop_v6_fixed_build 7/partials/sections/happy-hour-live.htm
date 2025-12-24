@@ -1,0 +1,79 @@
+{% set label = block.label ?: 'Happy Hour' %}
+{% set title = block.title ?: 'Happy Hour au bar' %}
+{% set description = block.description
+  ?: 'Tarifs préférentiels sur une sélection de boissons et de planches à partager.' %}
+{% set start_time = block.start_time ?: '17:00' %}
+{% set end_time = block.end_time ?: '19:00' %}
+{% set info = block.info ?: 'Offre valable du lundi au vendredi.' %}
+{% set cta_label = block.cta_label ?: 'Réserver une table' %}
+{% set cta_page = block.cta_page ?: 'reservations' %}
+
+{% set now_time = 'now'|date('H:i') %}
+{% if now_time >= start_time and now_time <= end_time %}
+  {% set state = 'live' %}
+{% elseif now_time < start_time %}
+  {% set state = 'before' %}
+{% else %}
+  {% set state = 'after' %}
+{% endif %}
+
+<section class="py-16 bg-gradient-to-r from-[#5e1616] via-[#7b1e1e] to-[#5e1616]" id="happy-hour">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="rounded-[2rem] bg-white/5 border border-white/20 px-6 py-8 md:px-10 md:py-10 text-white shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <p class="uppercase tracking-[0.3em] text-xs text-white/80">
+              {{ label }}
+            </p>
+            {% if state == 'live' %}
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-400 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-neutral-900">
+                <span class="w-2 h-2 rounded-full bg-emerald-700 animate-pulse"></span>
+                En cours
+              </span>
+            {% elseif state == 'before' %}
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-amber-300 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-neutral-900">
+                À venir
+              </span>
+            {% else %}
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/15 text-[0.7rem] font-semibold uppercase tracking-[0.18em]">
+                Terminé
+              </span>
+            {% endif %}
+          </div>
+          <p class="text-xs md:text-sm uppercase tracking-[0.25em] text-white/70">
+            {{ start_time }} – {{ end_time }}
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-[1.6fr,1fr] gap-6 md:gap-10 items-center">
+          <div>
+            <h2 class="font-serif text-2xl md:text-3xl mb-3">
+              {{ title }}
+            </h2>
+            <p class="text-sm md:text-base text-white/90 mb-3">
+              {{ description }}
+            </p>
+            {% if info %}
+              <p class="text-xs md:text-sm text-white/80">
+                {{ info }}
+              </p>
+            {% endif %}
+          </div>
+          <div class="flex md:flex-col gap-3 md:items-end">
+            {% if state != 'after' %}
+              <a href="{{ cta_page|page }}"
+                 class="inline-flex items-center px-6 py-2.5 rounded-full bg-white text-[#7b1e1e] text-sm uppercase tracking-[0.15em] hover:bg-[#f8f4ec]">
+                {{ cta_label }}
+              </a>
+            {% else %}
+              <span class="text-sm text-white/80 text-right">
+                L'happy hour est terminée pour aujourd'hui, mais reviendra aux horaires indiqués.
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,241 @@
+{# partials/site/jobs-advanced.htm
+   Page de recrutement moderne avec :
+   - hero dédié
+   - barre de recherche
+   - filtre type de contrat
+   - liste de postes
+   - formulaire de candidature
+   S'appuie sur les champs du thème (onglet Recrutement).
+#}
+
+{% set title = this.theme.jobs_title ?: "Rejoindre l'équipe" %}
+{% set intro = this.theme.jobs_intro ?: "Nous recherchons régulièrement de nouveaux talents en salle, en cuisine et au bar." %}
+{% set email = this.theme.jobs_email ?: "" %}
+{% set jobs = this.theme.jobs_items ?: [] %}
+
+<section class="bg-gradient-to-b from-[#7b1e1e] to-[#3b1010] text-white">
+  <div class="container mx-auto px-4 py-16 md:py-20 max-w-4xl">
+    <p class="uppercase tracking-[0.25em] text-xs text-white/80 mb-3">Recrutement</p>
+    <h1 class="font-serif text-3xl md:text-4xl mb-3">
+      {{ title }}
+    </h1>
+    <p class="text-sm md:text-base text-white/85 max-w-2xl">
+      {{ intro }}
+    </p>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container mx-auto px-4 max-w-5xl -mt-10 pb-16">
+    <div class="bg-white rounded-2xl shadow-xl px-4 py-5 md:px-6 md:py-6 mb-8 flex flex-col md:flex-row md:items-center gap-4">
+      <div class="flex-1 flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+        <div class="flex-1">
+          <label for="jobs-search" class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 mb-1">
+            Rechercher un poste
+          </label>
+          <input id="jobs-search" type="text" placeholder="Serveur, chef de partie, barman..."
+                 class="w-full border border-neutral-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+        </div>
+
+        {% set contractTypes = [] %}
+        {% for job in jobs %}
+          {% if job.contract_type and job.contract_type not in contractTypes %}
+            {% set contractTypes = contractTypes|merge([job.contract_type]) %}
+          {% endif %}
+        {% endfor %}
+
+        {% if contractTypes %}
+          <div class="w-full md:w-52">
+            <label for="jobs-contract-filter" class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500 mb-1">
+              Type de contrat
+            </label>
+            <select id="jobs-contract-filter"
+                    class="w-full border border-neutral-300 rounded-full px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+              <option value="">Tous les contrats</option>
+              {% for type in contractTypes %}
+                <option value="{{ type|lower }}">{{ type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+      </div>
+      <div class="text-xs text-neutral-500 md:text-right md:w-40">
+        <span id="jobs-count"></span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-[1.5fr,1.1fr] gap-8 items-start">
+      <div>
+        {% if jobs %}
+          <div id="jobs-list" class="space-y-4">
+            {% for job in jobs %}
+              <article class="job-card bg-[#f8f4ec]/80 rounded-2xl px-5 py-4 shadow-sm"
+                       data-job-card
+                       data-title="{{ (job.role ~ ' ' ~ job.description)|lower }}"
+                       data-contract="{{ (job.contract_type ?: '')|lower }}">
+                <div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 mb-1">
+                  <div>
+                    <h2 class="font-semibold text-neutral-900 text-base md:text-lg">
+                      {{ job.role }}
+                    </h2>
+                    {% if job.contract_type %}
+                      <p class="text-[0.7rem] uppercase tracking-[0.2em] text-neutral-600">
+                        {{ job.contract_type }}
+                      </p>
+                    {% endif %}
+                  </div>
+                  {% if email %}
+                    <p class="text-xs text-neutral-700">
+                      Candidature : <a href="mailto:{{ email }}" class="underline text-[#7b1e1e]">{{ email }}</a>
+                    </p>
+                  {% endif %}
+                </div>
+                {% if job.description %}
+                  <p class="text-sm text-neutral-700 mb-3">
+                    {{ job.description }}
+                  </p>
+                {% endif %}
+                <div class="flex flex-wrap items-center gap-3">
+                  {% if job.link %}
+                    <a href="{{ job.link }}" target="_blank" rel="noopener"
+                       class="inline-flex items-center px-4 py-1.5 rounded-full bg-[#7b1e1e] text-white text-xs uppercase tracking-[0.15em] hover:bg-[#5e1616]">
+                      Voir l'annonce
+                    </a>
+                  {% endif %}
+                  {% if job.role %}
+                    <button type="button"
+                            class="inline-flex items-center px-3 py-1.5 rounded-full border border-neutral-300 text-xs text-neutral-700 hover:border-[#7b1e1e] hover:text-[#7b1e1e]"
+                            data-apply-for="{{ job.role }}">
+                      Postuler pour ce poste
+                    </button>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-neutral-500 text-sm">
+            Aucune offre n'est publiée pour le moment. Vous pouvez toutefois nous envoyer une candidature spontanée via le formulaire.
+          </p>
+        {% endif %}
+      </div>
+
+      <div id="jobs-form" class="bg-[#f8f4ec]/80 rounded-2xl px-5 py-5 shadow-sm">
+        <h2 class="font-serif text-lg text-neutral-900 mb-2">
+          Candidature spontanée
+        </h2>
+        <p class="text-xs text-neutral-700 mb-4">
+          Remplissez ce formulaire, nous reviendrons vers vous si votre profil correspond à nos besoins.
+        </p>
+
+        <form data-request="onApplyJob">
+          <div class="mb-3">
+            <label class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600 mb-1">
+              Nom complet
+            </label>
+            <input type="text" name="name" required
+                   class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+          </div>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600 mb-1">
+              Adresse email
+            </label>
+            <input type="email" name="email" required
+                   class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+          </div>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600 mb-1">
+              Poste souhaité
+            </label>
+            <input type="text" name="position" id="jobs-position-input"
+                   placeholder="Ex : Chef de rang, Plongeur..."
+                   class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+          </div>
+          <div class="mb-3">
+            <label class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600 mb-1">
+              Message / présentation
+            </label>
+            <textarea name="message" rows="4"
+                      class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent"
+                      placeholder="Parlez-nous de votre expérience, de vos disponibilités, etc."></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="block text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600 mb-1">
+              Lien vers CV (optionnel)
+            </label>
+            <input type="url" name="cv_url"
+                   placeholder="URL LinkedIn, PDF en ligne..."
+                   class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e] focus:border-transparent">
+          </div>
+          <div class="flex justify-end">
+            <button type="submit"
+                    class="inline-flex items-center px-6 py-2.5 rounded-full bg-[#7b1e1e] text-white text-xs uppercase tracking-[0.2em] hover:bg-[#5e1616]">
+              Envoyer la candidature
+            </button>
+          </div>
+          <p class="mt-3 text-[0.7rem] text-neutral-500">
+            En envoyant ce formulaire, vous acceptez que vos données soient utilisées dans le cadre du recrutement.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var searchInput = document.getElementById('jobs-search');
+  var contractSelect = document.getElementById('jobs-contract-filter');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('[data-job-card]'));
+  var countElt = document.getElementById('jobs-count');
+  var positionInput = document.getElementById('jobs-position-input');
+
+  function applyFilters() {
+    var term = (searchInput ? searchInput.value.toLowerCase() : '').trim();
+    var contract = (contractSelect ? contractSelect.value.toLowerCase() : '').trim();
+    var visibleCount = 0;
+
+    cards.forEach(function (card) {
+      var title = (card.getAttribute('data-title') || '').toLowerCase();
+      var cardContract = (card.getAttribute('data-contract') || '').toLowerCase();
+      var matchesSearch = !term || title.indexOf(term) !== -1;
+      var matchesContract = !contract || cardContract === contract;
+
+      if (matchesSearch && matchesContract) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (countElt) {
+      if (cards.length === 0) {
+        countElt.textContent = '';
+      } else {
+        countElt.textContent = visibleCount + ' poste' + (visibleCount > 1 ? 's' : '') + ' affiché' + (visibleCount > 1 ? 's' : '');
+      }
+    }
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+  if (contractSelect) {
+    contractSelect.addEventListener('change', applyFilters);
+  }
+
+  document.querySelectorAll('[data-apply-for]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var role = btn.getAttribute('data-apply-for') || '';
+      if (positionInput) {
+        positionInput.value = role;
+        positionInput.focus();
+      }
+      window.scrollTo({ top: document.getElementById('jobs-form').offsetTop - 80, behavior: 'smooth' });
+    });
+  });
+
+  applyFilters();
+});
+</script>

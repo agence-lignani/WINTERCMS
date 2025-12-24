@@ -1,0 +1,7 @@
+<?php if ($messages = Flash::all()): ?>
+    <?php foreach ($messages as $type => $message): ?>
+        <div class="callout callout-<?= e($type) ?>">
+            <p><?= e($message) ?></p>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

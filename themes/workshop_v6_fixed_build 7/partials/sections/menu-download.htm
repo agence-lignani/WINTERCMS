@@ -1,0 +1,37 @@
+{% set title = block.title ?: 'Téléchargez la carte' %}
+{% set subtitle = block.subtitle ?: 'Retrouvez la carte complète au format PDF.' %}
+{% set pdf = block.pdf_file ?: this.theme.menu_pdf %}
+{% set primary_label = block.primary_label ?: 'Télécharger la carte (PDF)' %}
+{% set secondary_label = block.secondary_label ?: 'Voir la carte en ligne' %}
+
+<section class="py-12 bg-[#f8f4ec]" id="menu-pdf">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-neutral-200/70 p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+      <div class="flex-1">
+        <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">La carte</p>
+        <h2 class="font-serif text-2xl md:text-3xl text-neutral-900 mb-3">
+          {{ title }}
+        </h2>
+        {% if subtitle %}
+          <p class="text-neutral-700">
+            {{ subtitle }}
+          </p>
+        {% endif %}
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 md:justify-end">
+        {% if pdf %}
+          <a href="{{ pdf|media }}" target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#7b1e1e] text-white text-sm uppercase tracking-[0.15em] hover:bg-[#5e1616]">
+            {{ primary_label }}
+          </a>
+        {% endif %}
+
+        <a href="{{ 'menu'|page }}"
+           class="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-[#7b1e1e] text-[#7b1e1e] text-sm uppercase tracking-[0.15em] hover:bg-[#7b1e1e] hover:text-white">
+          {{ secondary_label }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

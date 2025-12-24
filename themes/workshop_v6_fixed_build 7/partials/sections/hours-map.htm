@@ -1,0 +1,64 @@
+{% set title = block.custom_title ?: this.theme.opening_hours_title %}
+{% set address = this.theme.address %}
+{% set phone = this.theme.phone %}
+{% set email = this.theme.email %}
+{% set opening = this.theme.opening_hours %}
+{% set show_button = block.show_button is defined ? block.show_button : true %}
+{% set map_iframe = this.theme.map_iframe %}
+
+<section class="py-16 bg-white" id="infos">
+  <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-10 items-stretch">
+    <div class="bg-[#f8f4ec] rounded-xl p-8 flex flex-col justify-between">
+      <div>
+        <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">Infos pratiques</p>
+        <h2 class="font-serif text-2xl text-neutral-900 mb-4">
+          {{ title }}
+        </h2>
+
+        {% if address %}
+          <p class="text-neutral-700 mb-4 whitespace-pre-line">
+            {{ address }}
+          </p>
+        {% endif %}
+
+        <div class="mb-4">
+          <h3 class="font-semibold text-sm uppercase tracking-[0.2em] text-neutral-700 mb-2">Horaires</h3>
+          {% if opening %}
+            <pre class="text-sm text-neutral-700 whitespace-pre-line font-sans">{{ opening }}</pre>
+          {% else %}
+            <p class="text-sm text-neutral-600">Renseignez les horaires dans l'onglet "Contact & horaires" du thème.</p>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          <h3 class="font-semibold text-sm uppercase tracking-[0.2em] text-neutral-700 mb-2">Contact</h3>
+          {% if phone %}
+            <p class="text-sm">Tél : <a href="tel:{{ phone|replace({' ': ''}) }}" class="underline text-[#7b1e1e]">{{ phone }}</a></p>
+          {% endif %}
+          {% if email %}
+            <p class="text-sm">Mail : <a href="mailto:{{ email }}" class="underline text-[#7b1e1e]">{{ email }}</a></p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if show_button %}
+        <div class="mt-4">
+          <a href="{{ 'reservations'|page }}"
+             class="inline-flex items-center px-5 py-2.5 bg-[#7b1e1e] text-white text-sm rounded-full uppercase tracking-[0.15em] hover:bg-[#5e1616]">
+            Réserver une table
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="rounded-xl overflow-hidden min-h-[260px] bg-neutral-200">
+      {% if map_iframe %}
+        {{ map_iframe|raw }}
+      {% else %}
+        <div class="w-full h-full flex items-center justify-center text-neutral-500 text-sm p-4">
+          Ajoutez le code Google Maps dans l'onglet "Contact & horaires" du thème.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

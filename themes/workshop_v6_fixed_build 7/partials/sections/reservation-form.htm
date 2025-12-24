@@ -1,0 +1,66 @@
+{% set block_title = block.reservation_block_title ?: 'Réserver une table' %}
+{% set block_intro = block.reservation_block_intro ?: this.theme.reservation_intro %}
+{% set min_guests = this.theme.reservation_min_guests ?: 1 %}
+{% set max_guests = this.theme.reservation_max_guests ?: 20 %}
+
+<section class="py-16 bg-[#f8f4ec]" id="reservations">
+  <div class="container mx-auto px-4 max-w-3xl">
+    <div class="text-center mb-8">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">Réserver</p>
+      <h2 class="font-serif text-3xl text-neutral-900 mb-3">{{ block_title }}</h2>
+      {% if block_intro %}
+        <p class="text-neutral-700">
+          {{ block_intro }}
+        </p>
+      {% endif %}
+    </div>
+
+    <form data-request="onReserve"
+          class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-neutral-800 mb-1">Nom</label>
+          <input type="text" name="name" class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-neutral-800 mb-1">Téléphone</label>
+          <input type="tel" name="phone" class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]" required>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-neutral-800 mb-1">Date</label>
+          <input type="date" name="date" class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-neutral-800 mb-1">Heure</label>
+          <input type="time" name="time" class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-neutral-800 mb-1">Couverts</label>
+          <input type="number" name="guests" min="{{ min_guests }}" max="{{ max_guests }}" value="2"
+                 class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-neutral-800 mb-1">Message</label>
+        <textarea name="message" rows="3"
+                  class="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#7b1e1e]"
+                  placeholder="Allergies, occasion particulière, demande spécifique..."></textarea>
+      </div>
+
+      <div class="flex justify-end">
+        <button type="submit"
+                class="inline-flex items-center px-6 py-2.5 bg-[#7b1e1e] text-white text-sm rounded-full uppercase tracking-[0.15em] hover:bg-[#5e1616]">
+          Envoyer la demande
+        </button>
+      </div>
+
+      <div data-attach-loading class="text-sm text-neutral-500 mt-2">
+        Envoi en cours...
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,269 @@
+{# --------------------------------------------------------
+  HERO DYNAMIQUE - Workshop Bistrot
+  - Height small / medium / tall
+  - Overlay intensité + couleur (none => ombre par défaut)
+  - Position du contenu
+  - Mode image: normal / fixed / parallax (si image)
+  - Mode vidéo: YouTube uniquement (si vidéo => pas d'image)
+  - Vidéo full cover responsive mobile
+  - Style des boutons (6 variantes)
+  - Nombre de boutons dynamique (repeater) avec fallback legacy
+  - IMPORTANT: si mode dynamique actif et aucun bouton ajouté => aucun bouton affiché
+--------------------------------------------------------- #}
+
+{% set title = block.hero_title ?: this.theme.site_name %}
+{% set subtitle = block.hero_subtitle ?: this.theme.site_tagline %}
+
+{% set media_type = block.hero_media_type ?: 'image' %}
+{% set image = (media_type == 'image') ? (block.hero_image ?: null) : null %}
+
+{% set cta_res = block.hero_cta_reservation ?: '' %}
+{% set cta_menu = block.hero_cta_menu ?: '' %}
+
+{% set cta_res_url = block.hero_cta_reservation_url ?: ('reservations'|page) %}
+{% set cta_menu_url = block.hero_cta_menu_url ?: ('menu'|page) %}
+{% set cta_res_newtab = block.hero_cta_reservation_newtab ?? false %}
+{% set cta_menu_newtab = block.hero_cta_menu_newtab ?? false %}
+
+{# ----- Hauteur du Hero ----- #}
+{% set hero_height = block.hero_height ?: 'medium' %}
+{% if hero_height == 'small' %}
+  {% set height_class = 'h-[55vh] min-h-[380px]' %}
+{% elseif hero_height == 'tall' %}
+  {% set height_class = 'h-[85vh] min-h-[600px]' %}
+{% else %}
+  {% set height_class = 'h-[70vh] min-h-[480px]' %}
+{% endif %}
+
+{# ----- Overlay dynamique ----- #}
+{% set overlay_intensity = block.hero_overlay_intensity ?: 'none' %}
+{% set overlay_color = block.hero_overlay_color ?: '#000000' %}
+
+{% if overlay_intensity == 'light' %}
+  {% set overlay_opacity = 0.30 %}
+{% elseif overlay_intensity == 'medium' %}
+  {% set overlay_opacity = 0.50 %}
+{% elseif overlay_intensity == 'strong' %}
+  {% set overlay_opacity = 0.70 %}
+{% else %}
+  {% set overlay_opacity = 0 %}
+{% endif %}
+
+{# ----- Position du contenu ----- #}
+{% set position = block.hero_content_position ?: 'center' %}
+{% set container_align = 'items-center justify-center' %}
+{% set text_align = 'text-center' %}
+{% set pad_class = 'px-4' %}
+
+{% if position == 'left' %}
+  {% set container_align = 'items-center justify-start' %}
+  {% set text_align = 'text-left' %}
+  {% set pad_class = 'px-6 md:px-16' %}
+{% elseif position == 'right' %}
+  {% set container_align = 'items-center justify-end' %}
+  {% set text_align = 'text-right' %}
+  {% set pad_class = 'px-6 md:px-16' %}
+{% elseif position == 'bottom_center' %}
+  {% set container_align = 'items-end justify-center' %}
+  {% set text_align = 'text-center' %}
+  {% set pad_class = 'px-4 pb-10 md:pb-14' %}
+{% elseif position == 'bottom_left' %}
+  {% set container_align = 'items-end justify-start' %}
+  {% set text_align = 'text-left' %}
+  {% set pad_class = 'px-6 md:px-16 pb-10 md:pb-14' %}
+{% endif %}
+
+{# ----- Vidéo YouTube (extraction ID) ----- #}
+{% set video_url = (media_type == 'video_youtube') ? (block.hero_video_url ?: '') : '' %}
+{% set video_id = '' %}
+
+{% if video_url %}
+  {% if 'youtu.be/' in video_url %}
+    {% set video_id = video_url|split('youtu.be/')[1]|split('?')[0] %}
+  {% elseif 'watch?v=' in video_url %}
+    {% set video_id = video_url|split('watch?v=')[1]|split('&')[0] %}
+  {% elseif '/embed/' in video_url %}
+    {% set video_id = video_url|split('/embed/')[1]|split('?')[0] %}
+  {% endif %}
+{% endif %}
+
+{# ----- Mode image ----- #}
+{% set bg_mode = block.hero_background_mode ?: 'normal' %}
+{% set bg_url = image ? (image|media) : '' %}
+
+{# ----- Style des boutons ----- #}
+{% set style = block.hero_button_style ?: 'solid' %}
+{% set btn_base = 'inline-flex items-center transition text-sm uppercase tracking-wide' %}
+
+{% if style == 'solid' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-full bg-[#7b1e1e] hover:bg-[#5e1616] text-white' %}
+  {% set btn_secondary = btn_base ~ ' px-6 py-2.5 rounded-full border border-white/60 hover:bg-white hover:text-neutral-900 text-white' %}
+
+{% elseif style == 'outline' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-full border border-white text-white hover:bg-white hover:text-neutral-900' %}
+  {% set btn_secondary = btn_primary %}
+
+{% elseif style == 'ghost' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-full text-white border border-white/40 hover:bg-white/10' %}
+  {% set btn_secondary = btn_primary %}
+
+{% elseif style == 'rounded_vintage' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-lg bg-[#7b1e1e] hover:bg-[#5e1616] text-white' %}
+  {% set btn_secondary = btn_base ~ ' px-6 py-2.5 rounded-lg border border-white text-white hover:bg-white hover:text-neutral-900' %}
+
+{% elseif style == 'elegant' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-md border border-[#f8f4ec] text-[#f8f4ec] tracking-wider hover:bg-[#f8f4ec] hover:text-neutral-900' %}
+  {% set btn_secondary = btn_primary %}
+
+{% elseif style == 'blackwhite' %}
+  {% set btn_primary = btn_base ~ ' px-6 py-2.5 rounded-full bg-black text-white hover:bg-white hover:text-black' %}
+  {% set btn_secondary = btn_base ~ ' px-6 py-2.5 rounded-full bg-white text-black hover:bg-black hover:text-white' %}
+{% endif %}
+
+{# ----- Construction liste de boutons ----- #}
+{% set use_dynamic = block.hero_use_dynamic_buttons ?? false %}
+{% set buttons = [] %}
+
+{% if use_dynamic %}
+  {# Mode dynamique actif : on utilise UNIQUEMENT le repeater, même s'il est vide #}
+  {% if block.hero_buttons is iterable and (block.hero_buttons|length) > 0 %}
+    {% for b in block.hero_buttons %}
+      {% set buttons = buttons|merge([{
+        label: b.label ?: '',
+        url: b.url ?: '#',
+        newtab: b.newtab ?? false,
+        variant: b.variant ?: 'primary'
+      }]) %}
+    {% endfor %}
+  {% endif %}
+{% else %}
+  {# Mode dynamique inactif : fallback legacy 2 boutons #}
+  {% if cta_res %}
+    {% set buttons = buttons|merge([{
+      label: cta_res,
+      url: cta_res_url,
+      newtab: cta_res_newtab,
+      variant: 'primary'
+    }]) %}
+  {% endif %}
+  {% if cta_menu %}
+    {% set buttons = buttons|merge([{
+      label: cta_menu,
+      url: cta_menu_url,
+      newtab: cta_menu_newtab,
+      variant: 'secondary'
+    }]) %}
+  {% endif %}
+{% endif %}
+
+<section class="hero-section relative {{ height_class }} flex {{ container_align }} bg-neutral-900 text-white overflow-hidden">
+
+  {# ---------- BACKGROUND VIDEO YOUTUBE (FULL COVER RESPONSIVE) ---------- #}
+  {% if media_type == 'video_youtube' and video_id %}
+    <div class="absolute inset-0 overflow-hidden bg-black">
+      <iframe
+        class="hero-video-embed absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist={{ video_id }}&modestbranding=1&playsinline=1"
+        title="Hero video"
+        frameborder="0"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+        style="
+          width: 177.78vh;
+          height: 56.25vw;
+          min-width: 100%;
+          min-height: 100%;
+        ">
+      </iframe>
+    </div>
+
+  {# ---------- BACKGROUND IMAGE (si pas vidéo) ---------- #}
+  {% elseif image %}
+    {% if bg_mode == 'fixed' %}
+      <div class="absolute inset-0 bg-cover bg-center bg-fixed"
+           style="background-image:url('{{ bg_url }}');"></div>
+
+    {% elseif bg_mode == 'parallax' %}
+      <div class="absolute inset-0 overflow-hidden">
+        <img src="{{ bg_url }}" alt="{{ title }}"
+             class="hero-parallax-img w-full h-full object-cover scale-110 will-change-transform">
+      </div>
+    {% else %}
+      <div class="absolute inset-0">
+        <img src="{{ bg_url }}" alt="{{ title }}" class="w-full h-full object-cover">
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {# Ombre / overlay #}
+  {% if overlay_intensity == 'none' %}
+    <div class="absolute inset-0 bg-black/50"></div>
+  {% else %}
+    <div class="absolute inset-0"
+         style="background-color: {{ overlay_color }}; opacity: {{ overlay_opacity }};"></div>
+  {% endif %}
+
+  <div class="relative z-10 {{ text_align }} {{ pad_class }} max-w-2xl">
+    <p class="uppercase tracking-[0.2em] text-sm text-neutral-200 mb-3">Bistrot parisien</p>
+
+    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-[#f8f4ec]">
+      {{ title }}
+    </h1>
+
+    {% if subtitle %}
+      <p class="text-base md:text-lg text-neutral-200 mb-6">
+        {{ subtitle }}
+      </p>
+    {% endif %}
+
+    {% if buttons|length > 0 %}
+      <div class="flex flex-wrap gap-3
+        {% if text_align == 'text-left' %}justify-start
+        {% elseif text_align == 'text-right' %}justify-end
+        {% else %}justify-center{% endif %}">
+        {% for b in buttons %}
+          {% set cls = (b.variant == 'secondary') ? btn_secondary : btn_primary %}
+          <a href="{{ b.url }}"{% if b.newtab %} target="_blank" rel="noopener noreferrer"{% endif %}
+             class="{{ cls }}">
+            {{ b.label }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  {# Parallax script uniquement en mode parallax et image #}
+  {% if media_type == 'image' and bg_mode == 'parallax' %}
+    <script>
+      (function () {
+        const section = document.currentScript.closest('.hero-section');
+        if (!section) return;
+        const img = section.querySelector('.hero-parallax-img');
+        if (!img) return;
+
+        let ticking = false;
+        const speed = 0.25;
+
+        function update() {
+          ticking = false;
+          const rect = section.getBoundingClientRect();
+          const viewportH = window.innerHeight || document.documentElement.clientHeight;
+          const progress = (rect.top / viewportH);
+          const translateY = Math.max(-60, Math.min(60, progress * 120 * speed));
+          img.style.transform = 'translateY(' + translateY + 'px) scale(1.1)';
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        }
+
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+      })();
+    </script>
+  {% endif %}
+</section>

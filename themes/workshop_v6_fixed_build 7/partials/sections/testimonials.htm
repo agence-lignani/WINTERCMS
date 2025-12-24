@@ -1,0 +1,57 @@
+{% set title = block.title ?: 'Ils parlent de nous' %}
+{% set intro = block.intro
+  ?: 'Découvrez quelques avis laissés par nos clients.' %}
+{% set source_label = block.source_label ?: 'Avis Google' %}
+{% set items = block.items ?: [] %}
+
+<section class="py-16 bg-white" id="avis">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-10">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">
+        {{ source_label }}
+      </p>
+      <h2 class="font-serif text-3xl text-neutral-900 mb-3">
+        {{ title }}
+      </h2>
+      {% if intro %}
+        <p class="text-neutral-700 max-w-2xl mx-auto">
+          {{ intro }}
+        </p>
+      {% endif %}
+    </div>
+
+    {% if items %}
+      <div class="grid md:grid-cols-3 gap-6">
+        {% for item in items %}
+          <article class="bg-[#f8f4ec] rounded-2xl p-5 h-full flex flex-col">
+            <div class="mb-3">
+              {% if item.rating %}
+                <p class="text-xs text-[#7b1e1e] mb-1">
+                  {% for i in 1..item.rating %}
+                    ★
+                  {% endfor %}
+                  <span class="text-neutral-600 ml-1">/ 5</span>
+                </p>
+              {% endif %}
+              <p class="text-sm text-neutral-700 italic">
+                “{{ item.text }}”
+              </p>
+            </div>
+            <div class="mt-auto pt-3 border-t border-[#7b1e1e]/15 text-sm text-neutral-800">
+              {% if item.name %}
+                <p class="font-medium">{{ item.name }}</p>
+              {% endif %}
+              {% if item.source %}
+                <p class="text-xs text-neutral-500">{{ item.source }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-neutral-500">
+        Ajoutez des avis dans le repeater "Avis" (nom, texte, note, source).
+      </p>
+    {% endif %}
+  </div>
+</section>

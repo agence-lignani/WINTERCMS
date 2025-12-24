@@ -1,0 +1,87 @@
+{# ======================================================
+  VERSION V3 — SERVICE TABS (titre/sous-titre/onglets)
+  Données globales: this.theme.menu_categories + this.theme.menu_menus
+====================================================== #}
+
+{% set bg = block.background_color ?: this.theme.menu_background_color ?: '#f4eee3' %}
+{% set menus = this.theme.menu_menus ?: [] %}
+{% set cats = this.theme.menu_categories ?: [] %}
+{% set note = this.theme.menu_note ?: '' %}
+
+{# Contraste guidé : auto / texte clair / texte foncé (titre, sous-titre, onglets) #}
+{% set textContrast = block.text_contrast ?: 'auto' %}
+{% set isDarkBg = bg matches '/^#([0-7][0-9a-f])/i' %}
+{% set useLightText = (textContrast == 'light') or (textContrast == 'auto' and isDarkBg) %}
+
+{% set titleClass = useLightText ? 'text-white' : 'text-neutral-900' %}
+{% set leadClass  = useLightText ? 'text-white' : 'text-neutral-600' %}
+{% set tabActiveTextClass = useLightText ? 'text-white' : 'text-neutral-900' %}
+{% set tabInactiveTextClass = useLightText ? 'text-white/70' : 'text-neutral-500' %}
+{% set tabActiveBorderClass = useLightText ? 'border-white' : 'border-neutral-900' %}
+
+{% set current = get('service') ?: 'midi' %}
+
+<section id="menu" class="py-20" style="background-color: {{ bg }}">
+  <div class="container mx-auto px-4">
+
+    {% if block.title or block.lead %}
+      <header class="mb-10 text-center">
+        {% if block.title %}
+          <h2 class="text-3xl md:text-4xl font-semibold {{ titleClass }}">{{ block.title }}</h2>
+        {% endif %}
+        {% if block.lead %}
+          <p class="mt-3 text-lg {{ leadClass }}">{{ block.lead }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    <div class="flex justify-center mb-10">
+      <ul class="flex gap-6 md:gap-10 text-sm uppercase tracking-wider">
+        <li>
+          <a href="?service=midi"
+             class="pb-2 border-b-2 {{ current == 'midi' ? (tabActiveBorderClass ~ ' ' ~ tabActiveTextClass ~ ' font-semibold') : ('border-transparent ' ~ tabInactiveTextClass) }}">
+            Midi
+          </a>
+        </li>
+        <li>
+          <a href="?service=soir"
+             class="pb-2 border-b-2 {{ current == 'soir' ? (tabActiveBorderClass ~ ' ' ~ tabActiveTextClass ~ ' font-semibold') : ('border-transparent ' ~ tabInactiveTextClass) }}">
+            Soir
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="max-w-4xl mx-auto space-y-10">
+      {% for cat in cats %}
+        {% if cat.service == current %}
+          <div>
+            <h3 class="text-xl font-semibold text-neutral-900">{{ cat.name }}</h3>
+            <div class="mt-4 divide-y divide-neutral-200">
+              {% for item in menus %}
+                {% if item.service == current and item.category == cat.key %}
+                  <div class="py-4 flex items-start justify-between gap-6">
+                    <div class="min-w-0">
+                      <p class="font-medium text-neutral-900">{{ item.title }}</p>
+                      {% if item.description %}
+                        <p class="mt-1 text-sm text-neutral-600">{{ item.description }}</p>
+                      {% endif %}
+                    </div>
+                    {% if item.price %}
+                      <div class="shrink-0 font-semibold text-neutral-900">{{ item.price }}</div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if note %}
+        <p class="pt-6 text-sm text-neutral-600">{{ note }}</p>
+      {% endif %}
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,37 @@
+{% set title = block.title ?: 'Questions fréquentes' %}
+{% set intro = block.intro
+  ?: 'Quelques réponses aux questions que l’on nous pose souvent.' %}
+{% set items = block.items ?: [] %}
+
+<section class="py-16 bg-[#f8f4ec]" id="faq">
+  <div class="container mx-auto px-4 max-w-3xl">
+    <div class="text-center mb-8">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">FAQ</p>
+      <h2 class="font-serif text-3xl text-neutral-900 mb-3">
+        {{ title }}
+      </h2>
+      {% if intro %}
+        <p class="text-neutral-700">
+          {{ intro }}
+        </p>
+      {% endif %}
+    </div>
+
+    {% if items %}
+      <div class="space-y-4">
+        {% for item in items %}
+          <div class="bg-white rounded-xl border border-neutral-200/80 p-4">
+            <p class="font-medium text-neutral-900 mb-1">{{ item.question }}</p>
+            <p class="text-sm text-neutral-700 whitespace-pre-line">
+              {{ item.answer }}
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-neutral-500">
+        Ajoutez des questions/réponses dans le repeater "Questions / réponses".
+      </p>
+    {% endif %}
+  </div>
+</section>

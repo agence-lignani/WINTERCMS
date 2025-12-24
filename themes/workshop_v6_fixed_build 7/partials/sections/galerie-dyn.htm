@@ -1,0 +1,36 @@
+{% set title = block.galerie_title ?: 'L\'ambiance du Bouillon' %}
+{% set intro = block.galerie_intro ?: '' %}
+{% set gallery = this.theme.gallery_images ?: [] %}
+
+<section class="py-16 bg-[#f8f4ec]" id="galerie">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-10">
+      <p class="uppercase tracking-[0.25em] text-xs text-[#7b1e1e] mb-2">Galerie</p>
+      <h2 class="font-serif text-3xl text-neutral-900 mb-3">
+        {{ title }}
+      </h2>
+      {% if intro %}
+        <p class="text-neutral-600 max-w-2xl mx-auto">
+          {{ intro }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {% for item in gallery %}
+        {% if item.image %}
+          <div class="group relative overflow-hidden rounded-lg aspect-[4/3] w-full">
+            <img src="{{ item.image|media }}" alt="{{ item.alt ?: 'Photo du restaurant' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm tracking-[0.2em] uppercase">
+              Voir
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="text-center col-span-full text-neutral-500">
+          Ajoutez des images dans l'onglet "Galerie" du thème pour alimenter cette section.
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
